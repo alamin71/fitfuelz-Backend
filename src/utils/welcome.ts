@@ -60,17 +60,6 @@
             <p style="margin: 5px 0 0 0; font-size: 12px; opacity: 0.9;">Production Ready</p>
           </div>
         </div>
-        <div style="padding: 25px; background: #f8f9fa; border-radius: 12px; margin-bottom: 25px; position: relative; z-index: 1;">
-          <h3 style="font-size: 18px; font-weight: 700; color: #333; margin: 0 0 15px 0;">🎯 FitFuelz Features</h3>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-            <div style="font-size: 14px; color: #555;"><strong>✨</strong> User Authentication</div>
-            <div style="font-size: 14px; color: #555;"><strong>📊</strong> Nutrition Tracking</div>
-            <div style="font-size: 14px; color: #555;"><strong>🏋️</strong> Workout Management</div>
-            <div style="font-size: 14px; color: #555;"><strong>🎖️</strong> Achievement System</div>
-            <div style="font-size: 14px; color: #555;"><strong>👥</strong> Community Features</div>
-            <div style="font-size: 14px; color: #555;"><strong>📱</strong> Mobile-First API</div>
-          </div>
-        </div>
         <div style="text-align: center; padding: 25px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%); border-radius: 12px; border-left: 4px solid #667eea; position: relative; z-index: 1;">
           <p style="font-size: 16px; font-weight: 600; color: #333; margin: 0 0 10px 0;">🚀 Ready to Build Something Amazing?</p>
           <p style="font-size: 13px; color: #666; margin: 0;">Start integrating with the FitFuelz API endpoints and transform your fitness journey!</p>
