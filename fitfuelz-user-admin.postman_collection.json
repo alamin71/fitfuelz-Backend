@@ -1,0 +1,705 @@
+{
+  "info": {
+    "_postman_id": "2f7c4c0f-9d89-4aa1-9f2b-8f1f7c1c5a21",
+    "name": "FitFuelz - Auth, User & Admin API",
+    "description": "Postman collection for the mounted /auth, /users, and /admin routes. Base path: /api/v1",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000" },
+    { "key": "userToken", "value": "YOUR_USER_ACCESS_TOKEN" },
+    { "key": "adminToken", "value": "YOUR_ADMIN_ACCESS_TOKEN" },
+    { "key": "superAdminToken", "value": "YOUR_SUPER_ADMIN_ACCESS_TOKEN" },
+    { "key": "signupToken", "value": "YOUR_SIGNUP_TOKEN" },
+    { "key": "otpToken", "value": "YOUR_OTP_TOKEN" },
+    { "key": "resetToken", "value": "YOUR_RESET_TOKEN" },
+    { "key": "adminId", "value": "ADMIN_ID" },
+    { "key": "policyType", "value": "privacy-policy" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Signup",
+          "description": "POST /api/v1/auth/signup. Headers: Content-Type: application/json. Body: name, email or phone, password. Returns signup OTP and signupToken.",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"phone\": \"\",\n  \"password\": \"Password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/signup",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "signup"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "description": "POST /api/v1/auth/login. Headers: Content-Type: application/json. Body: email or phone, password. Returns accessToken and refreshToken.",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"Password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Forgot Password",
+          "description": "POST /api/v1/auth/forgot-password. Headers: Content-Type: application/json. Body: email.",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/forgot-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "forgot-password"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Verify Signup OTP",
+          "description": "POST /api/v1/auth/verify-otp for signup flow. Headers: signup-token or Authorization Bearer token. Body: otp.",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "signup-token", "value": "{{signupToken}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"otp\": 1234\n}" },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/verify-otp",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "verify-otp"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Verify Reset OTP",
+          "description": "POST /api/v1/auth/verify-otp for forgot-password flow. Headers: otp-token or Authorization Bearer token. Body: otp.",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "otp-token", "value": "{{otpToken}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"otp\": 1234\n}" },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/verify-otp",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "verify-otp"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reset Password",
+          "description": "POST /api/v1/auth/reset-password. Headers: reset-token. Body: newPassword, confirmPassword.",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "reset-token", "value": "{{resetToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"newPassword\": \"Password123\",\n  \"confirmPassword\": \"Password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/reset-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "reset-password"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Change Password",
+          "description": "POST /api/v1/auth/change-password. Header: Authorization Bearer. Body: currentPassword, newPassword, confirmPassword.",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{userToken}}", "type": "string" }
+              ]
+            },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"Password123\",\n  \"newPassword\": \"Password1234\",\n  \"confirmPassword\": \"Password1234\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/change-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "change-password"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Resend OTP by Signup Token",
+          "description": "POST /api/v1/auth/resend-otp for signup flow. Headers: signup-token. Body can be empty.",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "signup-token", "value": "{{signupToken}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/resend-otp",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "resend-otp"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Resend OTP by Email",
+          "description": "POST /api/v1/auth/resend-otp. Headers: Content-Type: application/json. Body: email.",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/resend-otp",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "resend-otp"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh Token",
+          "description": "POST /api/v1/auth/refresh-token. Header: refreshtoken.",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "refreshtoken", "value": "YOUR_REFRESH_TOKEN" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/refresh-token",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "refresh-token"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Create User",
+          "description": "POST /api/v1/users. Headers: Content-Type: application/json. Body: name, email, password. Separate direct user create route.",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"Password123\",\n  \"phone\": \"\",\n  \"profile\": \"\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "users"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Profile",
+          "description": "GET /api/v1/users/profile. Header: Authorization Bearer user token.",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{userToken}}", "type": "string" }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "users", "profile"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update My Profile",
+          "description": "PATCH /api/v1/users/profile. Header: Authorization Bearer user token. Body: multipart/form-data fields name, email, password, image.",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{userToken}}", "type": "string" }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "name", "value": "John Doe", "type": "text" },
+                { "key": "email", "value": "john@example.com", "type": "text" },
+                { "key": "password", "value": "Password123", "type": "text" },
+                { "key": "image", "type": "file", "src": "" }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "users", "profile"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete My Profile",
+          "description": "DELETE /api/v1/users/delete. Header: Authorization Bearer user token. Body: password.",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{userToken}}", "type": "string" }
+              ]
+            },
+            "method": "DELETE",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"password\": \"Password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users/delete",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "users", "delete"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Admin Login",
+          "description": "POST /api/v1/admin/login. Headers: Content-Type: application/json. Body: email, password.",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"Password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin Forgot Password",
+          "description": "POST /api/v1/admin/forget-password. Headers: Content-Type: application/json. Body: email. Returns otpToken in data.",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/forget-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "forget-password"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin Verify Reset OTP",
+          "description": "POST /api/v1/admin/verify-reset-otp. Headers: otp-token or Authorization Bearer. Body: otp.",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "otp-token", "value": "{{otpToken}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"otp\": 1234\n}" },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/verify-reset-otp",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "verify-reset-otp"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin Reset Password",
+          "description": "POST /api/v1/admin/reset-password. Headers: reset-token. Body: newPassword, confirmPassword.",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "reset-token", "value": "{{resetToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"newPassword\": \"Password123\",\n  \"confirmPassword\": \"Password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/reset-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "reset-password"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin Change Password",
+          "description": "PATCH /api/v1/admin/change-password. Header: Authorization Bearer admin token. Body: currentPassword, newPassword, confirmPassword.",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+              ]
+            },
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"Password123\",\n  \"newPassword\": \"Password1234\",\n  \"confirmPassword\": \"Password1234\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/change-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "change-password"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin Resend OTP",
+          "description": "POST /api/v1/admin/resend-otp. Headers: Content-Type: application/json. Body: email.",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/resend-otp",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "resend-otp"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Admin List",
+          "description": "GET /api/v1/admin/get-admin. Header: Authorization Bearer super admin token.",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{superAdminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/get-admin",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "get-admin"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Admin Profile",
+          "description": "GET /api/v1/admin/profile. Header: Authorization Bearer admin token.",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "profile"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Admin Profile",
+          "description": "PATCH /api/v1/admin/profile/update. Header: Authorization Bearer admin token. Body: multipart/form-data fields name, userName, email, image.",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "name", "value": "Admin User", "type": "text" },
+                { "key": "userName", "value": "adminuser", "type": "text" },
+                {
+                  "key": "email",
+                  "value": "admin@example.com",
+                  "type": "text"
+                },
+                { "key": "image", "type": "file", "src": "" }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/profile/update",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "profile", "update"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remove Admin Profile Photo",
+          "description": "DELETE /api/v1/admin/profile/photo. Header: Authorization Bearer admin token.",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/profile/photo",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "profile", "photo"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Request Admin Email Change",
+          "description": "POST /api/v1/admin/change-email/request. Header: Authorization Bearer admin token. Body: newEmail.",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+              ]
+            },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"newEmail\": \"newadmin@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/change-email/request",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "change-email", "request"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Verify Admin Email Change OTP",
+          "description": "POST /api/v1/admin/change-email/verify-otp. Header: Authorization Bearer admin token. Body: otp.",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+              ]
+            },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"otp\": 123456\n}" },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/change-email/verify-otp",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "change-email", "verify-otp"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Policy Pages",
+          "description": "GET /api/v1/admin/policy. Header: Authorization Bearer admin token.",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/policy",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "policy"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Policy Page By Type",
+          "description": "GET /api/v1/admin/policy/:type. Header: Authorization Bearer admin token. Path param: type.",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/policy/{{policyType}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "policy", "{{policyType}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Policy Page",
+          "description": "POST /api/v1/admin/policy/:type. Header: Authorization Bearer admin token. Body: title, content. Path param: type.",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+              ]
+            },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Privacy Policy\",\n  \"content\": \"Policy content here\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/policy/{{policyType}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "policy", "{{policyType}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Policy Page",
+          "description": "PATCH /api/v1/admin/policy/:type. Header: Authorization Bearer admin token. Body: title and/or content. Path param: type.",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+              ]
+            },
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Privacy Policy\",\n  \"content\": \"Updated policy content\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/policy/{{policyType}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "policy", "{{policyType}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Policy Page",
+          "description": "DELETE /api/v1/admin/policy/:type. Header: Authorization Bearer admin token. Path param: type.",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/policy/{{policyType}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "policy", "{{policyType}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Admin By ID",
+          "description": "DELETE /api/v1/admin/:id. Header: Authorization Bearer super admin token. Path param: id.",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{superAdminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/{{adminId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "{{adminId}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

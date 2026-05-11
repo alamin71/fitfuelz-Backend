@@ -95,6 +95,9 @@ const updateAdminProfileInDB = async (
 };
 
 const adminLoginToDB = async (payload: ILoginData) => {
+  if (!payload.email) {
+    throw new AppError(StatusCodes.BAD_REQUEST, 'Email is required!');
+  }
   await ensureAdminUserByEmail(payload.email);
 
   const tokens = await AuthService.loginUserFromDB(payload);
@@ -114,6 +117,9 @@ const adminForgetPasswordToDB = async (email: string) => {
 };
 
 const adminVerifyResetOtpToDB = async (payload: IVerifyEmail) => {
+  if (!payload.email) {
+    throw new AppError(StatusCodes.BAD_REQUEST, 'Email is required!');
+  }
   await ensureAdminUserByEmail(payload.email);
   return AuthService.verifyEmailToDB(payload);
 };

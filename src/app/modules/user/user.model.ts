@@ -29,6 +29,11 @@ const userSchema = new Schema<IUser, UserModel>(
       select: false,
       minlength: 8,
     },
+    phone: {
+      type: String,
+      sparse: true,
+      unique: true,
+    },
     image: {
       type: String,
       default: '',

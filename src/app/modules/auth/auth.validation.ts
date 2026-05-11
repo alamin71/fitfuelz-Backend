@@ -8,20 +8,32 @@ const otpBodySchema = z.object({
 });
 
 const createSignupZodSchema = z.object({
-  body: z.object({
-    name: z.string().nonempty({ message: 'Name is required' }),
-    email: z.string().email({ message: 'Invalid email address' }),
-    password: z
-      .string()
-      .min(8, { message: 'Password must be at least 8 characters' }),
-  }),
+  body: z
+    .object({
+      name: z.string().nonempty({ message: 'Name is required' }),
+      email: z.string().email({ message: 'Invalid email address' }).optional(),
+      phone: z.string().optional(),
+      password: z
+        .string()
+        .min(8, { message: 'Password must be at least 8 characters' }),
+    })
+    .refine((data) => data.email || data.phone, {
+      message: 'Either email or phone is required',
+      path: ['email'],
+    }),
 });
 
 const createLoginZodSchema = z.object({
-  body: z.object({
-    email: z.string().nonempty({ message: 'Email is required' }),
-    password: z.string().nonempty({ message: 'Password is required' }),
-  }),
+  body: z
+    .object({
+      email: z.string().optional(),
+      phone: z.string().optional(),
+      password: z.string().nonempty({ message: 'Password is required' }),
+    })
+    .refine((data) => data.email || data.phone, {
+      message: 'Either email or phone is required',
+      path: ['email'],
+    }),
 });
 
 const createForgetPasswordZodSchema = z.object({
