@@ -22,7 +22,14 @@ const createAdmin = catchAsync(async (req: Request, res: Response) => {
 });
 
 const deleteAdmin = catchAsync(async (req: Request, res: Response) => {
-  const payload = req.params.id;
+  const payload = Array.isArray(req.params.id)
+    ? req.params.id[0]
+    : req.params.id;
+
+  if (!payload) {
+    throw new AppError(StatusCodes.BAD_REQUEST, 'Admin id is required');
+  }
+
   const result = await AdminService.deleteAdminFromDB(payload);
 
   sendResponse(res, {
