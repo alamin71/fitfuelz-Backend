@@ -27,6 +27,12 @@ const auth =
       if (tokenWithBearer && tokenWithBearer.startsWith('Bearer')) {
         const token = tokenWithBearer.split(' ')[1];
 
+        // temporary log to help debug missing/invalid token from client
+        // remove this in production
+        // eslint-disable-next-line no-console
+        console.log('Auth header:', tokenWithBearer);
+        // eslint-disable-next-line no-console
+        console.log('Extracted token:', token);
         //verify token
         let verifyUser: any;
         try {
