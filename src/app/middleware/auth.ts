@@ -1,10 +1,10 @@
-import { NextFunction, Request, Response } from "express";
-import { StatusCodes } from "http-status-codes";
-import { Secret } from "jsonwebtoken";
-import config from "../../config";
-import AppError from "../../errors/AppError";
-import { verifyToken } from "../../utils/verifyToken";
-import { User } from "../modules/user/user.model";
+import { NextFunction, Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
+import { Secret } from 'jsonwebtoken';
+import config from '../../config';
+import AppError from '../../errors/AppError';
+import { verifyToken } from '../../utils/verifyToken';
+import { User } from '../modules/user/user.model';
 
 const auth =
   (...roles: string[]) =>
@@ -14,18 +14,18 @@ const auth =
       if (!tokenWithBearer) {
         throw new AppError(
           StatusCodes.UNAUTHORIZED,
-          "You are not authorized !!"
+          'You are not authorized !!'
         );
       }
-      if (!tokenWithBearer.startsWith("Bearer")) {
+      if (!tokenWithBearer.startsWith('Bearer')) {
         throw new AppError(
           StatusCodes.UNAUTHORIZED,
-          "Token send is not valid !!"
+          'Token send is not valid !!'
         );
       }
 
-      if (tokenWithBearer && tokenWithBearer.startsWith("Bearer")) {
-        const token = tokenWithBearer.split(" ")[1];
+      if (tokenWithBearer && tokenWithBearer.startsWith('Bearer')) {
+        const token = tokenWithBearer.split(' ')[1];
 
         //verify token
         let verifyUser: any;
@@ -34,7 +34,7 @@ const auth =
         } catch (error) {
           throw new AppError(
             StatusCodes.UNAUTHORIZED,
-            "You are not authorized !!"
+            'You are not authorized !!'
           );
         }
 
@@ -43,18 +43,25 @@ const auth =
         if (!user) {
           throw new AppError(
             StatusCodes.NOT_FOUND,
-            "This user is not found !!"
+            'This user is not found !!'
           );
         }
 
-        if (user?.status === "blocked") {
-          throw new AppError(StatusCodes.FORBIDDEN, "This user is blocked !!");
+        if (user?.status === 'blocked') {
+          throw new AppError(StatusCodes.FORBIDDEN, 'This user is blocked !!');
+        }
+
+        if (String(user?.status) === 'deactivated') {
+          throw new AppError(
+            StatusCodes.FORBIDDEN,
+            'This user account is deactivated. Please login again to reactivate.'
+          );
         }
 
         if (user?.isDeleted) {
           throw new AppError(
             StatusCodes.FORBIDDEN,
-            "This user accaunt is deleted !!"
+            'This user account is deleted !!'
           );
         }
 
