@@ -463,6 +463,7 @@ const changePasswordToDB = async (
     throw new AppError(StatusCodes.BAD_REQUEST, "User doesn't exist!");
   }
 
+  //current password match
   if (
     currentPassword &&
     !(await User.isMatchPassword(currentPassword, isExistUser.password))
@@ -470,13 +471,14 @@ const changePasswordToDB = async (
     throw new AppError(StatusCodes.BAD_REQUEST, 'Password is incorrect');
   }
 
+  //newPassword and current password
   if (currentPassword === newPassword) {
     throw new AppError(
       StatusCodes.BAD_REQUEST,
       'Please give different password from current password'
     );
   }
-
+  //new password and confirm password check
   if (newPassword !== confirmPassword) {
     throw new AppError(
       StatusCodes.BAD_REQUEST,
@@ -484,17 +486,16 @@ const changePasswordToDB = async (
     );
   }
 
+  //hash password
   const hashPassword = await bcrypt.hash(
     newPassword,
     Number(config.bcrypt_salt_rounds)
   );
 
-  const result = await User.findByIdAndUpdate(
-    user.id,
-    { password: hashPassword },
-    { new: true }
-  );
-
+  const updateData = { password: hashPassword };
+  const result = await User.findOneAndUpdate({ _id: user.id }, updateData, {
+    new: true,
+  });
   return result;
 };
 
