@@ -17,22 +17,29 @@ const auth =
           'You are not authorized !!'
         );
       }
-      if (!tokenWithBearer.startsWith('Bearer')) {
+      if (!tokenWithBearer.toLowerCase().startsWith('bearer ')) {
         throw new AppError(
           StatusCodes.UNAUTHORIZED,
           'Token send is not valid !!'
         );
       }
 
-      if (tokenWithBearer && tokenWithBearer.startsWith('Bearer')) {
-        const token = tokenWithBearer.split(' ')[1];
+      if (
+        tokenWithBearer &&
+        tokenWithBearer.toLowerCase().startsWith('bearer ')
+      ) {
+        const token = tokenWithBearer
+          .slice(7)
+          .trim()
+          .replace(/^['"]|['"]$/g, '');
 
-        // temporary log to help debug missing/invalid token from client
-        // remove this in production
-        // eslint-disable-next-line no-console
-        console.log('Auth header:', tokenWithBearer);
-        // eslint-disable-next-line no-console
-        console.log('Extracted token:', token);
+        if (!token) {
+          throw new AppError(
+            StatusCodes.UNAUTHORIZED,
+            'Token send is not valid !!'
+          );
+        }
+
         //verify token
         let verifyUser: any;
         try {
