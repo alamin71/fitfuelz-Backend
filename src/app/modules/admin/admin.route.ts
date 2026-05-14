@@ -7,6 +7,8 @@ import { PolicyPageValidation } from './policy-page.validation';
 import auth from '../../middleware/auth';
 import validateRequest from '../../middleware/validateRequest';
 import { s3FileUploadHandler } from '../../middleware/s3FileUploadHandler';
+import { MealController } from '../meal/meal.controller';
+import { MealValidation } from '../meal/meal.validation';
 const router = express.Router();
 const adminUpload = s3FileUploadHandler;
 
@@ -133,3 +135,33 @@ router.delete(
 );
 
 export const AdminRoutes = router;
+
+// Admin meal management
+router.post(
+  '/meals',
+  auth(USER_ROLES.ADMIN, USER_ROLES.SUPER_ADMIN),
+  adminUpload.fields([{ name: 'meal_image', maxCount: 1 }]),
+  validateRequest(MealValidation.createMealZodSchema),
+  MealController.createMeal
+);
+
+router.patch(
+  '/meals/:id',
+  auth(USER_ROLES.ADMIN, USER_ROLES.SUPER_ADMIN),
+  adminUpload.fields([{ name: 'meal_image', maxCount: 1 }]),
+  validateRequest(MealValidation.updateMealZodSchema),
+  MealController.updateMeal
+);
+
+router.delete(
+  '/meals/:id',
+  auth(USER_ROLES.ADMIN, USER_ROLES.SUPER_ADMIN),
+  MealController.deleteMeal
+);
+
+router.get(
+  '/meals/category/:category',
+  auth(USER_ROLES.ADMIN, USER_ROLES.SUPER_ADMIN),
+  validateRequest(MealValidation.getMealsByCategoryZodSchema),
+  MealController.getMealsByCategory
+);
