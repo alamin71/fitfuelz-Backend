@@ -134,8 +134,6 @@ router.delete(
   AdminController.deleteAdmin
 );
 
-export const AdminRoutes = router;
-
 // Admin meal management
 router.post(
   '/meals',
@@ -165,3 +163,5 @@ router.get(
   validateRequest(MealValidation.getMealsByCategoryZodSchema),
   MealController.getMealsByCategory
 );
+
+export const AdminRoutes = router;
