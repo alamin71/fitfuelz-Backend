@@ -149,6 +149,11 @@ router.get(
   validateRequest(MealValidation.getMealsByCategoryZodSchema),
   MealController.getMealsByCategory
 );
+router.get(
+  '/meals/:id',
+  auth(USER_ROLES.ADMIN, USER_ROLES.SUPER_ADMIN),
+  MealController.getMealById
+);
 
 router.patch(
   '/meals/:id',
