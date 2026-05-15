@@ -42,7 +42,7 @@ const createMeal = catchAsync(async (req: Request, res: Response) => {
 });
 
 const updateMeal = catchAsync(async (req: Request, res: Response) => {
-  const id = req.params.id;
+  const { id } = req.params as { id: string };
   if (!id) throw new AppError(StatusCodes.BAD_REQUEST, 'Meal id is required');
 
   const payload = { ...req.body } as any;
@@ -80,7 +80,7 @@ const updateMeal = catchAsync(async (req: Request, res: Response) => {
 });
 
 const deleteMeal = catchAsync(async (req: Request, res: Response) => {
-  const id = req.params.id;
+  const { id } = req.params as { id: string };
   if (!id) throw new AppError(StatusCodes.BAD_REQUEST, 'Meal id is required');
 
   const result = await MealService.deleteMealFromDB(id);
@@ -94,7 +94,7 @@ const deleteMeal = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getMealsByCategory = catchAsync(async (req: Request, res: Response) => {
-  const category = req.params.category;
+  const { category } = req.params as { category: string };
   if (!category)
     throw new AppError(StatusCodes.BAD_REQUEST, 'Category is required');
 
@@ -109,7 +109,7 @@ const getMealsByCategory = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getMealById = catchAsync(async (req: Request, res: Response) => {
-  const id = req.params.id;
+  const { id } = req.params as { id: string };
   const result = await MealService.getMealByIdFromDB(id);
 
   sendResponse(res, {
