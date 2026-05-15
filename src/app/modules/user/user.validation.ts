@@ -20,12 +20,15 @@ export const createUserZodSchema = z.object({
 });
 
 const updateUserZodSchema = z.object({
-  body: z.object({
-    name: z.string().optional(),
-    email: z.string().email('Invalid email address').optional(),
-    password: z.string().optional(),
-    image: z.string().optional(),
-  }),
+  body: z
+    .object({
+      name: z.string(),
+      email: z.string().email('Invalid email address'),
+      phone: z.string(),
+      password: z.string(),
+      image: z.string(),
+    })
+    .partial(),
 });
 
 export const UserValidation = {
