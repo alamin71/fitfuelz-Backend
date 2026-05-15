@@ -146,6 +146,7 @@ router.post(
 router.get(
   '/meals',
   auth(USER_ROLES.ADMIN, USER_ROLES.SUPER_ADMIN),
+  validateRequest(MealValidation.getMealsByCategoryZodSchema),
   MealController.getMealsByCategory
 );
 
