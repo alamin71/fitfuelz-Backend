@@ -40,7 +40,7 @@ export const MealValidation = {
   }),
 
   getMealsByCategoryZodSchema: z.object({
-    params: z.object({
+    query: z.object({
       category: z
         .string()
         .nonempty({ message: 'Category is required' })

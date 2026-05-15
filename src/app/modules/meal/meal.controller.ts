@@ -94,7 +94,7 @@ const deleteMeal = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getMealsByCategory = catchAsync(async (req: Request, res: Response) => {
-  const { category } = req.params as { category: string };
+  const { category } = req.query as { category: string };
   if (!category)
     throw new AppError(StatusCodes.BAD_REQUEST, 'Category is required');
 

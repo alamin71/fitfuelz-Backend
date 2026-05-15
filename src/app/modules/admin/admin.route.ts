@@ -158,11 +158,4 @@ router.delete(
   MealController.deleteMeal
 );
 
-router.get(
-  '/meals/category/:category',
-  auth(USER_ROLES.ADMIN, USER_ROLES.SUPER_ADMIN),
-  validateRequest(MealValidation.getMealsByCategoryZodSchema),
-  MealController.getMealsByCategory
-);
-
 export const AdminRoutes = router;

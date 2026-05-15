@@ -5,15 +5,15 @@ import { MealValidation } from './meal.validation';
 
 const router = express.Router();
 
-// Public route to get meals by category for frontend
+// Get single meal
+router.get('/detail/:id', MealController.getMealById);
+
+// Public route to get meals by category for frontend (query parameter)
 router.get(
-  '/:category',
+  '/',
   validateRequest(MealValidation.getMealsByCategoryZodSchema),
   MealController.getMealsByCategory
 );
-
-// Get single meal
-router.get('/:id/detail', MealController.getMealById);
 
 export const MealRouter = router;
 
