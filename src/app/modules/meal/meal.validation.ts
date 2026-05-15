@@ -28,7 +28,10 @@ export const MealValidation = {
   updateMealZodSchema: z.object({
     body: z.object({
       name: z.string().optional(),
-      price: z.number().optional(),
+      price: z.preprocess((val) => {
+        if (val === undefined || val === null || val === '') return undefined;
+        return Number(val);
+      }, z.number().optional()),
       description: z.string().optional(),
       category: z
         .string()
