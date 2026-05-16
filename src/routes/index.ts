@@ -3,6 +3,9 @@ import { UserRouter } from '../app/modules/user/user.route';
 import { AuthRouter } from '../app/modules/auth/auth.route';
 import { AdminRoutes } from '../app/modules/admin/admin.route';
 import { MealRouter } from '../app/modules/meal/meal.route';
+import { PaymentRouter } from '../app/modules/payment/payment.route';
+import { CartRouter } from '../app/modules/cart/cart.route';
+import { OrderRouter } from '../app/modules/order/order.route';
 
 const router = express.Router();
 const routes = [
@@ -21,6 +24,18 @@ const routes = [
   {
     path: '/meals',
     route: MealRouter,
+  },
+  {
+    path: '/payments',
+    route: PaymentRouter,
+  },
+  {
+    path: '/cart',
+    route: CartRouter,
+  },
+  {
+    path: '/orders',
+    route: OrderRouter,
   },
 ];
 
