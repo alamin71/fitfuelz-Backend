@@ -3,9 +3,21 @@ import { z } from 'zod';
 const allowedCategories = [
   'Breakfast & Grab-and-go Favourites',
   'Eight meal box',
-  'Sixteen meal box',
+  '8 Meal Box',
+  'Twelve meal box',
+  '12 Meal Box',
+  '12- Meal Box',
   'Fifteen meal box',
+  '15 Meal Box',
 ];
+
+const normalizeCategory = (value: string) =>
+  value.trim().toLowerCase().replace(/-/g, ' ').replace(/\s+/g, ' ');
+
+const allowedNormalizedCategories = allowedCategories.map(normalizeCategory);
+
+const isValidCategory = (value: string) =>
+  allowedNormalizedCategories.includes(normalizeCategory(value));
 
 export const MealValidation = {
   createMealZodSchema: z.object({
@@ -19,7 +31,7 @@ export const MealValidation = {
       category: z
         .string()
         .nonempty({ message: 'Category is required' })
-        .refine((v) => allowedCategories.includes(v), {
+        .refine((v) => isValidCategory(v), {
           message: 'Invalid category',
         }),
     }),
@@ -36,7 +48,7 @@ export const MealValidation = {
       category: z
         .string()
         .optional()
-        .refine((v) => (v ? allowedCategories.includes(v) : true), {
+        .refine((v) => (v ? isValidCategory(v) : true), {
           message: 'Invalid category',
         }),
     }),
@@ -47,7 +59,7 @@ export const MealValidation = {
       category: z
         .string()
         .nonempty({ message: 'Category is required' })
-        .refine((v) => allowedCategories.includes(v), {
+        .refine((v) => isValidCategory(v), {
           message: 'Invalid category',
         }),
     }),

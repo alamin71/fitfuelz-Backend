@@ -4,6 +4,7 @@ export interface ICartItem {
   mealId: string;
   mealName: string;
   mealImage?: string;
+  itemCategory?: string;
   unitPrice: number;
   quantity: number;
   lineTotal: number;
@@ -25,6 +26,7 @@ const CartItemSchema = new Schema<ICartItem>(
     mealId: { type: String, required: true },
     mealName: { type: String, required: true },
     mealImage: { type: String },
+    itemCategory: { type: String },
     unitPrice: { type: Number, required: true },
     quantity: { type: Number, required: true, min: 1 },
     lineTotal: { type: Number, required: true },
